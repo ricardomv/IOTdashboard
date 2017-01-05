@@ -1,0 +1,14 @@
+{
+  "name": "webui",
+  "version": "0.0.1",
+  "description": "web interface for raspberry gpio controll",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ricardo Vieira",
+  "license": "MIT",
+  "dependencies": {
+    "@claviska/jquery-minicolors": "^2.2.4"
+  }
+}

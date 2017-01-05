@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+    <title>jQuery MiniColors</title>
+    <meta charset="utf-8">
+
+    <!-- jQuery -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+
+    <!-- MiniColors -->
+    <script src="node_modules/@claviska/jquery-minicolors/jquery.minicolors.js"></script>
+    <link rel="stylesheet" href="node_modules/@claviska/jquery-minicolors/jquery.minicolors.css">
+
+    <style>
+        body {
+            font: 16px sans-serif;
+            line-height: 1.8;
+            padding: 0 40px;
+            margin-bottom: 200px;
+        }
+        a {
+            color: #08c;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .form-group {
+    	    display: inline-block;
+    	    margin: 5px 0;
+    	    border-style: solid;
+    	    border-width: 2px;
+    	    padding: 2px;
+        }
+        label {
+            color: #888;
+        }
+    </style>
+
+        <script language="javascript" type="text/javascript">
+        var wsUri = "ws://echo.websocket.org/";
+        $(document).ready( function() {
+            $("#button_add").click(function(){
+                $("#array").append(document.createElement('br'))
+                $("#array").append(new_light_pcb())
+            });
+            $("#array").append(new_light_pcb())
+            websocket = new WebSocket(wsUri)
+            websocket.onmessage = function(evt) {
+                console.log(evt.data);
+                document.body.innerHTML += evt.data
+            };
+        });
+        var colors = ["#ff0000", "#ff6600", "#ffda21", "#33dd00", "#00ffff", "#1133cc", "#ff00ff", "#fffff0"];
+        function new_light_pcb() {
+            var div = document.createElement('div');
+            div.setAttribute("class", "form-group");
+            for (var i = 0; i < 8; i++) {
+                var led = document.createElement('input');
+                led.setAttribute("type", "hidden");
+                led.setAttribute("id", "hidden-input");
+                led.setAttribute("class", "demo");
+                led.setAttribute("data-control", "brightness");
+                led.setAttribute("value", colors[i]);
+                div.appendChild(led)
+            }
+            $(div).children('input').each(function () {
+                $(this).minicolors({
+                    control: $(this).attr('data-control') || 'hue',
+                    defaultValue: $(this).attr('data-defaultValue') || '',
+                    format: $(this).attr('data-format') || 'hex',
+                    keywords: $(this).attr('data-keywords') || '',
+                    inline: $(this).attr('data-inline') === 'true',
+                    letterCase: $(this).attr('data-letterCase') || 'lowercase',
+                    opacity: $(this).attr('data-opacity'),
+                    position: $(this).attr('data-position') || 'bottom left',
+                    swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+                    change: function(hex, opacity) {
+                        var log;
+                        try {
+                            log = hex ? hex : 'transparent';
+                            if( opacity ) log += ', ' + opacity;
+                            //console.log(log + " id: " + this.id);
+                            websocket.send(log);
+                        } catch(e) {}
+                    },
+                    theme: 'default'
+                });
+            });
+            return div;
+        }
+    </script>
+</head>
+<body>
+    <!-- Control Types -->
+    <h3>Control Lights</h3>
+
+    <div id="array"></div>
+    <button type="button" id="button_add">+</button>
+</body>
+</html>
