@@ -7,6 +7,7 @@
 
     <!-- jQuery -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src='https://cdn.cryptowat.ch/assets/build/scripts/dist/embed.js'></script>
 
     <!-- MiniColors -->
     <script src="node_modules/@claviska/jquery-minicolors/jquery.minicolors.js"></script>
@@ -98,5 +99,27 @@
 
     <div id="array"></div>
     <button type="button" id="button_add">+</button>
+    <input type="datetime-local">
+    <div id="chart-container" style="height: 400px;"></div>
+    <script>var chart = new cryptowatch.Embed('coinbase', 'btcusd', {
+        timePeriod: '1d',
+        width: 650,
+        customColorScheme: {
+            bg: '000000',
+            text: 'b2b2b2',
+            textStrong: 'e5e5e5',
+            textWeak: '7f7f7f',
+            short: 'FD4600',
+            shortFill: 'FF672C',
+            long: '6290FF',
+            longFill: '002782',
+            cta: '363D52',
+            ctaHighlight: '414A67',
+            alert: 'FFD506'
+        }
+    });
+    chart.mount('#chart-container');
+    //# sourceURL=pen.js
+    </script>
 </body>
 </html>
